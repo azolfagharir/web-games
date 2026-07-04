@@ -1,26 +1,543 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   استایل‌های پایه
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #0a0a0a;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ============================================
+   انیمیشن‌های پس‌زمینه
+   ============================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 0.6; }
+}
+
+/* ============================================
+   صفحه اصلی
+   ============================================ */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #0a0a1a, #1a0a2e, #0a1a2e, #0a0a1a);
+  position: relative;
+  overflow: hidden;
+}
+
+/* افکت ستاره‌های متحرک */
+.stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* دایره‌های رنگی متحرک */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: float 8s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 170, 255, 0.15);
+  top: -50px;
+  right: -50px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 107, 107, 0.1);
+  bottom: -100px;
+  left: -100px;
+  animation-delay: 2s;
+}
+
+.orb-3 {
+  width: 250px;
+  height: 250px;
+  background: rgba(255, 221, 87, 0.08);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+/* هدر صفحه اصلی */
+.home-header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.home-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #00ccff, #ffdd57, #ff6b6b, #00ccff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(0, 200, 255, 0.3));
+  text-shadow: none;
+}
+
+.home-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  margin-top: 8px;
+  letter-spacing: 2px;
+}
+
+/* ============================================
+   کارت‌های بازی
+   ============================================ */
+.games-grid {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 700px;
+  width: 100%;
+}
+
+.game-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 20px 16px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.game-card:hover::before {
+  opacity: 1;
+}
+
+.game-card:active {
+  transform: scale(0.95);
+}
+
+/* هر کارت با رنگ متفاوت */
+.game-card-1 {
+  border-color: rgba(0, 170, 255, 0.3);
+}
+.game-card-1:hover {
+  box-shadow: 0 20px 60px rgba(0, 170, 255, 0.2);
+}
+
+.game-card-2 {
+  border-color: rgba(255, 107, 107, 0.3);
+}
+.game-card-2:hover {
+  box-shadow: 0 20px 60px rgba(255, 107, 107, 0.2);
+}
+
+.game-card-3 {
+  border-color: rgba(125, 237, 159, 0.3);
+}
+.game-card-3:hover {
+  box-shadow: 0 20px 60px rgba(125, 237, 159, 0.2);
+}
+
+.game-card-image {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s ease;
+}
+
+.game-card-1 .game-card-image {
+  background: rgba(0, 170, 255, 0.1);
+  border-color: rgba(0, 170, 255, 0.3);
+}
+
+.game-card-2 .game-card-image {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.game-card-3 .game-card-image {
+  background: rgba(125, 237, 159, 0.1);
+  border-color: rgba(125, 237, 159, 0.3);
+}
+
+.game-card:hover .game-card-image {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.game-card-title {
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.game-card-desc {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+}
+
+.game-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   صفحه بازی
+   ============================================ */
+.game-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #0a0a1a, #1a0a2e, #0a1a2e, #0a0a1a);
+  overflow: hidden;
+  position: relative;
+}
+
+.game-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.1), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.08), transparent),
+    radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.1), transparent),
+    radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.06), transparent),
+    radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.08), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.1), transparent);
+  background-size: 200px 200px;
+}
+
+.game-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 500px;
+  height: 95vh;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* کانواس - 65% */
+.game-canvas-wrapper {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-basis: 65%;
+}
+
+.game-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  background: #1a1a32;
+  border: 2px solid rgba(0, 170, 255, 0.2);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 170, 255, 0.1);
+}
+
+/* اطلاعات - 20% */
+.game-info-wrapper {
+  flex-shrink: 0;
+  padding: 8px 4px 4px 4px;
+  flex-basis: 20%;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  color: white;
+}
+
+.info-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 6px 4px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.info-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.5;
+  display: block;
+}
+
+.info-value {
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  margin-top: 2px;
+}
+
+.score-value { color: #ffdd57; }
+.level-value { color: #88ddff; }
+.fuel-value { color: #ff6b6b; }
+.lives-value { color: #ff6b6b; }
+.time-value { color: #ff9ff3; }
+.best-value { color: #ffdd57; }
+
+.fuel-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.fuel-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.restart-btn {
+  background: linear-gradient(135deg, #ff6b6b, #dc2626);
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  grid-column: span 1;
+}
+
+.restart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+}
+
+.restart-btn:active {
+  transform: scale(0.95);
+}
+
+.back-home-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  grid-column: span 1;
+}
+
+.back-home-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.back-home-btn:active {
+  transform: scale(0.95);
+}
+
+/* کنترل‌ها - 15% */
+.game-controls-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 0;
+  flex-basis: 15%;
+}
+
+.ctrl-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 28px;
+  padding: 12px 32px;
+  border-radius: 16px;
+  cursor: pointer;
+  min-width: 70px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.ctrl-btn:active {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   ریسپانسیو
+   ============================================ */
+@media (max-width: 600px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 300px;
+  }
+  
+  .game-card {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+  }
+  
+  .game-card-image {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  .game-card-badge {
+    display: none;
+  }
+  
+  .home-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .ctrl-btn {
+    font-size: 22px;
+    padding: 8px 20px;
+    min-width: 55px;
+  }
+  
+  .info-value {
+    font-size: 12px;
+  }
+  
+  .info-item {
+    padding: 4px;
+  }
+  
+  .game-wrapper {
+    max-height: 700px;
+  }
+}
+
+@media (max-height: 700px) {
+  .game-wrapper {
+    max-height: 600px;
+  }
+  
+  .ctrl-btn {
+    font-size: 18px;
+    padding: 6px 16px;
+    min-width: 45px;
+  }
+  
+  .info-value {
+    font-size: 10px;
+  }
+  
+  .info-item {
+    padding: 3px;
+  }
+  
+  .game-info-wrapper {
+    padding: 4px 2px;
+  }
+  
+  .game-controls-wrapper {
+    padding: 4px 0;
+  }
 }
